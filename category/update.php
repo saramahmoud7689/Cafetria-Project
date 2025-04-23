@@ -4,7 +4,13 @@
     error_reporting(E_ALL);
     include_once '../connect.php';
     $errors = array();
-    $catName = '';
+    $catId = $_GET['catid'];
+    $checkExisting = "SELECT * FROM categories WHERE id = '$catId'";
+    $checkExistingResult = mysqli_query($myConnection, $checkExisting);
+    $catInfo = mysqli_fetch_assoc($checkExistingResult);
+    $catName = $catInfo['name'];
+
+
 
     if(isset($_POST['submit'])) {
         
@@ -23,16 +29,14 @@
             echo "<div class='alert alert-danger text-center m-auto w-50'>Category Name already exists </div>";
         } 
         if(empty($errors)) {
-            
-            
-            $insertQuery = "INSERT INTO categories (name) VALUES ('$catName')";
+            $insertQuery = "Update categories SET name = '$catName' WHERE id = '$catId'";
             $result = mysqli_query($myConnection, $insertQuery);
             if($result) {
-                echo "<div class='alert alert-success text-center m-auto w-50'>Category Added Successfully</div>";
+                echo "<div class='alert alert-success text-center m-auto w-50'>Category Updated Successfully</div>";
                 $catName = ""; 
                 header("Location: category.php");
             } else {
-                $errors['add'] = "Failed to add category: " . mysqli_error($myConnection);
+                $errors['add'] = "Failed to Update category: " . mysqli_error($myConnection);
             }
         }
     }
@@ -62,9 +66,9 @@
 
     <form method="POST" class="d-flex justify-content-between align-items-baseline">
         <div class="mb-3 col-md-6">
-            <input type="text" class="form-control p-2" id="name" name="name">
+            <input type="text" class="form-control p-2" id="name" name="name" value="<?php echo $catName; ?>">
         </div>
-        <button type="submit" class="btn btn-primary col-md-4 text-center p-2" name="submit">Add Category</button>
+        <button type="submit" class="btn btn-primary col-md-4 text-center p-2" name="submit">Update Category</button>
     </form>
 
     <table class="table table-bordered table-striped text-center m-auto w-50 my-5"> 

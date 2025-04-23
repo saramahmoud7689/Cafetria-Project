@@ -4,5 +4,11 @@
     $password = "";
     $databaseName = "cafteria_db";
     
-    $myConnection = new mysqli($serverName, $userName, $password, $databaseName);
+    $myConnection = mysqli_connect($serverName, $userName, $password, $databaseName);
+
+    if (!$myConnection) {
+        die("Connection failed: " . mysqli_connect_error());
+    } else {
+        //  echo "Connected successfully";
+    }
 ?>
