@@ -122,6 +122,7 @@
         <input type="file" class="form-control" id="image" name="image">
     </div>
     <button type="submit" class="btn btn-primary" name="subBtn">Add Product</button>
+    <a href="listproducts.php" class="btn btn-danger">Cancel</a>
     </form>
 </body>
 </html>
