@@ -105,7 +105,11 @@
         </select>
     </div>
     <div>
-        <label for="category" class="form-label">Category</label>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <a href="../category/category.php"><button type="button" class="btn btn-primary mx-3">Add New Category</button></a>
+        </div>
+        
         <select class="form-select mb-3" name="cat_id" id="category">
             <?php  
                 include_once '../connect.php';
