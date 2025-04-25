@@ -80,7 +80,7 @@
                         // echo $myusers;
                         echo "<option selected>Choose Room</option>";
 
-                        $rooms = [];
+                        $rooms = ['Application1' , 'Application2', 'cloud'];
                         while($user = mysqli_fetch_assoc($myusers)){
                             // print_r($user['room']);
                             // room.push('$user['room']');
