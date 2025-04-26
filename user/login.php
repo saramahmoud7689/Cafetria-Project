@@ -7,15 +7,49 @@
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .error-message {
-            color: red;
-            font-size: 0.875em;
-            margin-top: 0.25rem;
+    .error-message {
+        color: red;
+        font-size: 0.875em;
+        margin-top: 0.25rem;
+    }
+
+    .alert-success {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        width: 90%;
+        max-width: 500px;
+        animation: fadeInOut 5s forwards;
+    }
+
+    @keyframes fadeInOut {
+        0% {
+            opacity: 0;
         }
+
+        10% {
+            opacity: 1;
+        }
+
+        90% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
     </style>
 </head>
 
 <body class="bg-light d-flex justify-content-center align-items-center vh-100">
+    <?php if (isset($_GET['reset_success'])): ?>
+    <div class="alert alert-success">
+        Password has been reset successfully! You can now login.
+    </div>
+    <?php endif; ?>
 
     <div class="container">
         <div class="row justify-content-center">
@@ -25,7 +59,7 @@
                         <h3 class="text-center mb-4">Login</h3>
                         <form id="loginForm" action="login_process.php" method="POST">
                             <div class="mb-3">
-                                <label for="username" class="form-label">Username or Email</label>
+                                <label for="username" class="form-label">Email</label>
                                 <input type="text" id="username" name="username" class="form-control">
                                 <div id="usernameError" class="error-message"></div>
                             </div>
@@ -44,7 +78,7 @@
                                     } elseif ($_GET['error'] === 'user_not_found') {
                                         echo "User not found.";
                                     }
-                                ?>
+                                    ?>
                             </div>
                             <?php endif; ?>
 
@@ -53,7 +87,8 @@
                             </div>
 
                             <div class="text-center">
-                                <small>Don't have an account? <a href="register.php">Register</a></small>
+                                <small>Don't have an account? <a href="register.php">Register</a></small><br>
+                                <small><a href="forgot_password.php">Forgot password?</a></small>
                             </div>
                         </form>
                     </div>
@@ -63,31 +98,35 @@
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function (e) {
-            let isValid = true;
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        let isValid = true;
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
 
-            document.getElementById('usernameError').textContent = '';
-            document.getElementById('passwordError').textContent = '';
+        document.getElementById('usernameError').textContent = '';
+        document.getElementById('passwordError').textContent = '';
 
-            if (!username) {
-                document.getElementById('usernameError').textContent = 'Username or email is required';
-                isValid = false;
-            }
+        if (!username) {
+            document.getElementById('usernameError').textContent = 'Email is required';
+            isValid = false;
+        }
 
-            if (!password) {
-                document.getElementById('passwordError').textContent = 'Password is required';
-                isValid = false;
-            } else if (password.length < 6) {
-                document.getElementById('passwordError').textContent = 'Password must be at least 6 characters';
-                isValid = false;
-            }
+        if (!password) {
+            document.getElementById('passwordError').textContent = 'Password is required';
+            isValid = false;
+        }
 
-            if (!isValid) {
-                e.preventDefault();
-            }
-        });
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+
+    setTimeout(function() {
+        const successAlert = document.querySelector('.alert-success');
+        if (successAlert) {
+            successAlert.style.display = 'none';
+        }
+    }, 5000);
     </script>
 </body>
 
