@@ -84,45 +84,93 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.min.js" integrity="sha384-VQqxDN0EQCkWoxt/0vsQvZswzTHUVOImccYmSyhJTp7kGtPed0Qcx8rK9h9YEgx+" crossorigin="anonymous"></script>
-
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <h1 class="text-center">Add Product</h1>
-    <form method="POST" class="m-4" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name">
+    <div class="page-container row">
+        <aside class="col-md-2 col-12">
+                <div class="d-flex flex-column p-3">
+                    <h4 class="text-center mb-4">Admin Panel</h4>
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="listproducts.php" class="nav-link">
+                                <i class="fas fa-home me-2"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="listproducts.php" class="nav-link">
+                                <i class="fas fa-box me-2"></i> Products
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-users me-2"></i> Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-shopping-cart me-2"></i> Manual Order
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-list-check me-2"></i> Checks
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-user-shield me-2"></i> Admin
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+        </aside>
+        <main class="col-md-10 col-12">
+            <h1 class="text-center">Add Product</h1>
+            <form method="POST" class="m-4" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name">
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="text" class="form-control" id="price" name="price">
+                </div>
+                <div>
+                    <label for="avalability" class="form-label">Availability</label>
+                    <select class="form-select mb-3" name="avalability" id="avalability">
+                        <option value="true">Available</option>
+                        <option value="false">Not Available</option>
+                    </select>
+                </div>
+                <div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
+                        <a href="../category/category.php"><button type="button" class="btn btn-primary mx-3">Add New Category</button></a>
+                    </div>
+                    
+                    <select class="form-select mb-3" name="cat_id" id="category">
+                        <?php  
+                            include_once '../connect.php';
+                            $getAllCategories = "SELECT * FROM categories";
+                            $result = mysqli_query($myConnection, $getAllCategories);
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                            }
+                        ?>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Product Image</label>
+                    <input type="file" class="form-control" id="image" name="image">
+                </div>
+                <button type="submit" class="btn btn-primary" name="subBtn">Add Product</button>
+                <a href="listproducts.php" class="btn btn-danger">Cancel</a>
+            </form>
+        </main>
     </div>
-    <div class="mb-3">
-        <label for="price" class="form-label">Price</label>
-        <input type="text" class="form-control" id="price" name="price">
-    </div>
-    <div>
-        <label for="avalability" class="form-label">Availability</label>
-        <select class="form-select mb-3" name="avalability" id="avalability">
-            <option value="true">Available</option>
-            <option value="false">Not Available</option>
-        </select>
-    </div>
-    <div>
-        <label for="category" class="form-label">Category</label>
-        <select class="form-select mb-3" name="cat_id" id="category">
-            <?php  
-                include_once '../connect.php';
-                $getAllCategories = "SELECT * FROM categories";
-                $result = mysqli_query($myConnection, $getAllCategories);
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
-                }
-            ?>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="image" class="form-label">Product Image</label>
-        <input type="file" class="form-control" id="image" name="image">
-    </div>
-    <button type="submit" class="btn btn-primary" name="subBtn">Add Product</button>
-    <a href="listproducts.php" class="btn btn-danger">Cancel</a>
-    </form>
+    
+    
 </body>
 </html>

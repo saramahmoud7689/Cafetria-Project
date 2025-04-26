@@ -62,45 +62,86 @@
     </style>
 </head>
 <body>
-    <h1 class="text-center">Category Management</h1>
+    <div class="page-container row">
+        <aside class="col-md-2 col-12">
+                <div class="d-flex flex-column p-3">
+                    <h4 class="text-center mb-4">Admin Panel</h4>
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="../product/listproducts.php" class="nav-link">
+                                <i class="fas fa-home me-2"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../product/listproducts.php" class="nav-link">
+                                <i class="fas fa-box me-2"></i> Products
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-users me-2"></i> Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-shopping-cart me-2"></i> Manual Order
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-list-check me-2"></i> Checks
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-user-shield me-2"></i> Admin
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+        </aside>
+        <main class="col-md-10 col-12">
+            <h1 class="text-center">Category Management</h1>
+            <form method="POST" class="d-flex justify-content-between align-items-baseline">
+                <div class="mb-3 col-md-6">
+                    <input type="text" class="form-control p-2" id="name" name="name" value="<?php echo $catName; ?>">
+                </div>
+                <button type="submit" class="btn btn-primary col-md-4 text-center p-2" name="submit">Update Category</button>
+            </form>
 
-    <form method="POST" class="d-flex justify-content-between align-items-baseline">
-        <div class="mb-3 col-md-6">
-            <input type="text" class="form-control p-2" id="name" name="name" value="<?php echo $catName; ?>">
-        </div>
-        <button type="submit" class="btn btn-primary col-md-4 text-center p-2" name="submit">Update Category</button>
-    </form>
-
-    <table class="table table-bordered table-striped text-center m-auto w-50 my-5"> 
-        <thead class="table-dark">
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-                $getQuery = "SELECT * FROM categories";
-                $getResult = mysqli_query($myConnection, $getQuery);
-                
-                if ($getResult) {
-                    $i = 1; 
-                    while($catInfo = mysqli_fetch_assoc($getResult)) {
-                        echo "<tr>";
-                        echo "<td>" . $i++ . "</td>";
-                        echo "<td>" . htmlspecialchars($catInfo["name"]) . "</td>";
-                        echo "<td>
-                                <a href='delete.php?catid={$catInfo['id']}' class='btn btn-danger btn-sm'>Delete</a>
-                                <a href='update.php?catid={$catInfo['id']}' class='btn btn-warning btn-sm'>Update</a>
-                              </td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='3'>Error fetching categories: " . mysqli_error($myConnection) . "</td></tr>";
-                }
-            ?>
-        </tbody>
-    </table>
+            <table class="table table-bordered table-striped text-center m-auto w-50 my-5"> 
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $getQuery = "SELECT * FROM categories";
+                        $getResult = mysqli_query($myConnection, $getQuery);
+                        
+                        if ($getResult) {
+                            $i = 1; 
+                            while($catInfo = mysqli_fetch_assoc($getResult)) {
+                                echo "<tr>";
+                                echo "<td>" . $i++ . "</td>";
+                                echo "<td>" . htmlspecialchars($catInfo["name"]) . "</td>";
+                                echo "<td>
+                                        <a href='delete.php?catid={$catInfo['id']}' class='btn btn-danger btn-sm'>Delete</a>
+                                        <a href='update.php?catid={$catInfo['id']}' class='btn btn-warning btn-sm'>Update</a>
+                                    </td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='3'>Error fetching categories: " . mysqli_error($myConnection) . "</td></tr>";
+                        }
+                    ?>
+                </tbody>
+            </table>
+        </main>
+    </div>
+    
 </body>
 </html>
