@@ -102,57 +102,99 @@
 
 </head>
 <body>
-    <h1 class="text-center">Update Product</h1>
-    <form method="POST" class="m-4" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name" value="<?php echo $name ?>">
+    <div class="page-container row">
+        <aside class="col-md-2 col-12">
+                <div class="d-flex flex-column p-3">
+                    <h4 class="text-center mb-4">Admin Panel</h4>
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="listproducts.php" class="nav-link">
+                                <i class="fas fa-home me-2"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="listproducts.php" class="nav-link">
+                                <i class="fas fa-box me-2"></i> Products
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-users me-2"></i> Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-shopping-cart me-2"></i> Manual Order
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-list-check me-2"></i> Checks
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-user-shield me-2"></i> Admin
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+        </aside>
+        <main class="col-md-10 col-12">
+            <h1 class="text-center">Update Product</h1>
+            <form method="POST" class="m-4" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="<?php echo $name ?>">
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="text" class="form-control" id="price" name="price" value="<?php echo $price ?>">
+                </div>
+                <div>
+                    <label for="avalability" class="form-label">Availability</label>
+                    <span class="text-primary"> 
+                        <?php 
+                            echo ($avalability == 'true') ? 'Available' : 'Not Available';
+                            echo " (current), you can change it below";
+                        ?>
+                    </span>
+                    <select class="form-select mb-3" name="avalability" id="avalability">
+                        <option value="true" <?php echo ($avalability == 'true') ? 'selected' : ''; ?>>Available</option>
+                        <option value="false" <?php echo ($avalability == 'false') ? 'selected' : ''; ?>>Not Available</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="category" class="form-label">Category: </label>
+                    <span class="text-primary"> 
+                        <?php 
+                            $getCat = "SELECT * FROM categories WHERE id = '$cat_id'";
+                            $result = mysqli_query($myConnection, $getCat);
+                            $cat = mysqli_fetch_assoc($result);
+                            echo $cat['name'] . " (current), you can change it below";
+                        ?>
+                    </span>
+                    <select class="form-select mb-3" name="cat_id" id="category">
+                        <?php  
+                            $getAllCategories = "SELECT * FROM categories";
+                            $result = mysqli_query($myConnection, $getAllCategories);
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $selected = ($row['id'] == $cat_id) ? 'selected' : '';
+                                echo "<option value='" . $row['id'] . "' $selected>" . $row['name'] . "</option>";
+                            }
+                        ?>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Product Image</label>
+                    <img src="../images/<?php echo $image ?>" alt="Product Image" width="100" height="100">
+                    <input type="file" class="form-control" id="image" name="image" value="<?php echo $image ?>">
+                </div>
+                <button type="submit" class="btn btn-primary" name="subBtn">Update Product</button>
+                <a href="listproducts.php" class="btn btn-danger">Cancel</a>
+            </form>
+        </main>
     </div>
-    <div class="mb-3">
-        <label for="price" class="form-label">Price</label>
-        <input type="text" class="form-control" id="price" name="price" value="<?php echo $price ?>">
-    </div>
-    <div>
-        <label for="avalability" class="form-label">Availability</label>
-        <span class="text-primary"> 
-            <?php 
-                echo ($avalability == 'true') ? 'Available' : 'Not Available';
-                echo " (current), you can change it below";
-            ?>
-        </span>
-        <select class="form-select mb-3" name="avalability" id="avalability">
-            <option value="true" <?php echo ($avalability == 'true') ? 'selected' : ''; ?>>Available</option>
-            <option value="false" <?php echo ($avalability == 'false') ? 'selected' : ''; ?>>Not Available</option>
-        </select>
-    </div>
-    <div>
-        <label for="category" class="form-label">Category: </label>
-        <span class="text-primary"> 
-            <?php 
-                $getCat = "SELECT * FROM categories WHERE id = '$cat_id'";
-                $result = mysqli_query($myConnection, $getCat);
-                $cat = mysqli_fetch_assoc($result);
-                echo $cat['name'] . " (current), you can change it below";
-            ?>
-        </span>
-        <select class="form-select mb-3" name="cat_id" id="category">
-            <?php  
-                $getAllCategories = "SELECT * FROM categories";
-                $result = mysqli_query($myConnection, $getAllCategories);
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $selected = ($row['id'] == $cat_id) ? 'selected' : '';
-                    echo "<option value='" . $row['id'] . "' $selected>" . $row['name'] . "</option>";
-                }
-            ?>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="image" class="form-label">Product Image</label>
-        <img src="../images/<?php echo $image ?>" alt="Product Image" width="100" height="100">
-        <input type="file" class="form-control" id="image" name="image" value="<?php echo $image ?>">
-    </div>
-    <button type="submit" class="btn btn-primary" name="subBtn">Update Product</button>
-    <a href="listproducts.php" class="btn btn-danger">Cancel</a>
-    </form>
+    
 </body>
 </html>
