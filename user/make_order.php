@@ -1,4 +1,7 @@
 <?php
+ ini_set('display_errors', 1);
+ ini_set('display_startup_errors', 1);
+ error_reporting(E_ALL);
 session_start();
 
 include_once "../connect.php";
@@ -164,40 +167,49 @@ function getProductQuantity($productId) {
                 $query = "SELECT * FROM orders ORDER BY order_date DESC LIMIT 1"; // Assuming 'created_at' is the date column
                 $myorders = mysqli_query($myConnection, $query);
                 
-                $latestOrder = mysqli_fetch_assoc($myorders);
+                if (!$myorders) {
+                    echo "Error: " . mysqli_error($myConnection);
+                } elseif (mysqli_num_rows($myorders) == 0) {
+                    echo "No orders found.";
+                } else {
+                    $latestOrder = mysqli_fetch_assoc($myorders);
                 
-                // print_r($myorders);
-                // print_r($latestOrder);
+                    // print_r($myorders);
+                    // print_r($latestOrder);
+    
+                    $orderId = $latestOrder['id'];
 
-                $orderId = $latestOrder['id'];
+                    $query = "SELECT p.name, p.image, p.price, p.id, od.quantity 
+                    FROM products p 
+                    JOIN order_details od ON p.id = od.product_id
+                    JOIN orders o ON o.id = od.order_id
+                    WHERE od.order_id = $orderId
+                    ORDER BY o.order_date DESC";
 
-                $query = "SELECT p.name, p.image, p.price, p.id, od.quantity 
-                FROM products p 
-                JOIN order_details od ON p.id = od.product_id
-                JOIN orders o ON o.id = od.order_id
-                WHERE od.order_id = $orderId
-                ORDER BY o.order_date DESC";
-
-                $myproducts = mysqli_query($myConnection, $query);
+                    $myproducts = mysqli_query($myConnection, $query);
 
 
-                // Loop through the products and display them
-                while($product = mysqli_fetch_assoc($myproducts)) {
-                    $pname = $product['name'];
-                    $pimage = $product['image'];
-                    $pprice = $product['price'];
-                    $pid = $product['id'];
-                    $quantity = $product['quantity'];  // Quantity of the product in this order
+                    // Loop through the products and display them
+                    while($product = mysqli_fetch_assoc($myproducts)) {
+                        $pname = $product['name'];
+                        $pimage = $product['image'];
+                        $pprice = $product['price'];
+                        $pid = $product['id'];
+                        $quantity = $product['quantity'];  // Quantity of the product in this order
 
-                    echo "<a href='cart.php?action=add&orderitem=$pid&price=$pprice&name=$pname&image=$pimage' class='btn col-3 text-center mb-4'>";
-                    echo '<div>';
-                    echo "<img src='$pimage' alt='Product' class='img-fluid'>";
-                    echo "<h5>$pname</h5>";
-                    echo "<p class='badge bg-primary'>$$pprice</p>";
-                    echo "<p>Quantity: $quantity</p>";
-                    echo '</div>';
-                    echo '</a>';
+                        echo "<a href='cart.php?action=add&orderitem=$pid&price=$pprice&name=$pname&image=$pimage' class='btn col-3 text-center mb-4'>";
+                        echo '<div>';
+                        echo "<img src='$pimage' alt='Product' class='img-fluid'>";
+                        echo "<h5>$pname</h5>";
+                        echo "<p class='badge bg-primary'>$$pprice</p>";
+                        echo "<p>Quantity: $quantity</p>";
+                        echo '</div>';
+                        echo '</a>';
+                    }
                 }
+                
+
+                
               ?>
 
             <div class="row">
