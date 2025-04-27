@@ -1,41 +1,68 @@
 <?php
-// Start session
 session_start();
 
-// Initialize cart if it doesn't exist
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
+if (!isset($_SESSION['total'])) {
+    $_SESSION['total'] = 0;
+}
 
-// Check if orderitem ID is sent
-if (isset($_GET['orderitem'])) {
-    $product_id = intval($_GET['orderitem']); // Always sanitize inputs!
+if (isset($_GET['orderitem']) && isset($_GET['price']) && isset($_GET['action'])) {
+    $product_id = intval($_GET['orderitem']);
+    $product_price = intval($_GET['price']);
+    $action = $_GET['action'];
+    $product_name = $_GET['name'];
+    $product_image = $_GET['image'];
 
-    $found = false;
+    if ($action == 'add') {
+        $found = false;
+        foreach ($_SESSION['cart'] as &$item) {
+            if ($item['id'] == $product_id) {
+                $item['quantity'] += 1; 
+                $_SESSION['total'] += $product_price;
+                $found = true;
+                break;
+            }
+        }
 
-    // Loop through cart to check if product already exists
-    foreach ($_SESSION['cart'] as &$item) {
-        if ($item['id'] == $product_id) {
-            // Product found, increase quantity
-            $item['quantity'] += 1;
-            $found = true;
-            break;
+        if (!$found) {
+            $_SESSION['cart'][] = [
+                'id' => $product_id,
+                'name' => $product_name,
+                'image' => $product_image,
+                'price' => $product_price,
+                'quantity' => 1
+            ];
+            $_SESSION['total'] += $product_price;
+        }
+
+    } else {
+        foreach ($_SESSION['cart'] as $key => &$item) {
+            if ($item['id'] == $product_id) {
+                if ($action == 'increase') {
+                    $item['quantity'] += 1;
+                    $_SESSION['total'] += $product_price;
+                } elseif ($action == 'decrease') {
+                    if ($item['quantity'] > 1) {
+                        $item['quantity'] -= 1;
+                        $_SESSION['total'] -= $product_price;
+                    } else {
+                        unset($_SESSION['cart'][$key]);
+                        $_SESSION['total'] -= $product_price;
+                    }
+                } elseif ($action == 'delete') {
+                    $_SESSION['total'] -= $product_price * $item['quantity'];
+                    unset($_SESSION['cart'][$key]);
+                }
+                break;
+            }
         }
     }
-    unset($item); // break reference with last element
 
-    // If not found, add new product with quantity 1
-    if (!$found) {
-        $_SESSION['cart'][] = [
-            'id' => $product_id,
-            'quantity' => 1
-        ];
-    }
-
-    // Redirect to cart page or back
     header('Location: make_order.php');
     exit();
 } else {
-    echo "No product selected.";
+    echo "No product selected or wrong action.";
 }
 ?>
