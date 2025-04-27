@@ -150,7 +150,6 @@ function getProductQuantity($productId) {
                 <?php
                     if (isset($_POST['user_id'])) {
                         $_SESSION['user_id_a'] = $_POST['user_id'];
-                        echo "user_id_a is ".$_SESSION['user_id_a'];
                     }
 
                 ?>
