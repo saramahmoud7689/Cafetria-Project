@@ -121,23 +121,85 @@ function getProductQuantity($productId) {
                 </h4>
                 <button type="submit" class="btn btn-primary w-100" name="confirm_order">Confirm</button>
             </form>
-
         </div>
 
         <!-- Right Product Section -->
         <div class="col-md-8">
+
+        
             <!-- at admin view -->
-            <!-- <div class="mb-3">
-                <label for="user" class="form-label">Add to user</label>
-                <select class="form-select" id="user" name="user">  !-- options from users.name --
-                    <option selected>Islam Askar</option>
-                    <option>Other User</option>
+            <div class="mb-3">
+            <h4>Add to user</h4>
+            <form method="POST" action="">
+                <div class="row">
+                <select class="form-select" id="user" name="user_id">
+                    <option>Choose User</option>
+                    <?php
+                        $query = "SELECT * FROM users";
+                        $myusers = mysqli_query($myConnection, $query);
+
+                        while($user = mysqli_fetch_assoc($myusers)){
+                            $name = $user['name'];
+                            $user_id = $user['id']; 
+
+                            echo "<option value='$user_id'>$name</option>";
+                        }
+                    ?>
                 </select>
-            </div> -->
+                <button type="submit" class="btn btn-primary mt-2">Set User</button>
+                <?php
+                    if (isset($_POST['user_id'])) {
+                        $_SESSION['user_id_a'] = $_POST['user_id'];
+                        echo "user_id_a is ".$_SESSION['user_id_a'];
+                    }
+
+                ?>
+                </div>
+            </form>
+            </div>
 
             <!-- at user view -->
              <h4>latest order</h4>
              <!-- show latest order -->
+              <?php
+                $query = "SELECT * FROM orders ORDER BY order_date DESC LIMIT 1"; // Assuming 'created_at' is the date column
+                $myorders = mysqli_query($myConnection, $query);
+                
+                $latestOrder = mysqli_fetch_assoc($myorders);
+                
+                // print_r($myorders);
+                // print_r($latestOrder);
+
+                $orderId = $latestOrder['id'];
+
+                $query = "SELECT p.name, p.image, p.price, p.id, od.quantity 
+                FROM products p 
+                JOIN order_details od ON p.id = od.product_id
+                JOIN orders o ON o.id = od.order_id
+                WHERE od.order_id = $orderId
+                ORDER BY o.order_date DESC";
+
+                $myproducts = mysqli_query($myConnection, $query);
+
+
+                // Loop through the products and display them
+                while($product = mysqli_fetch_assoc($myproducts)) {
+                    $pname = $product['name'];
+                    $pimage = $product['image'];
+                    $pprice = $product['price'];
+                    $pid = $product['id'];
+                    $quantity = $product['quantity'];  // Quantity of the product in this order
+
+                    echo "<a href='cart.php?action=add&orderitem=$pid&price=$pprice&name=$pname&image=$pimage' class='btn col-3 text-center mb-4'>";
+                    echo '<div>';
+                    echo "<img src='$pimage' alt='Product' class='img-fluid'>";
+                    echo "<h5>$pname</h5>";
+                    echo "<p class='badge bg-primary'>$$pprice</p>";
+                    echo "<p>Quantity: $quantity</p>";
+                    echo '</div>';
+                    echo '</a>';
+                }
+              ?>
 
             <div class="row">
 

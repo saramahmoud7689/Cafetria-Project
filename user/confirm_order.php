@@ -7,9 +7,29 @@ if (isset($_POST['confirm_order'])) {
     $notes = mysqli_real_escape_string($myConnection, $_POST['notes']);
     $room = mysqli_real_escape_string($myConnection, $_POST['room']);
     $total_cost = isset($_SESSION['total']) ? $_SESSION['total'] : 0;
-    $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1; // make sure you store logged-in user id in session
     $order_date = date('Y-m-d H:i:s');
     $status = 'Processing'; 
+
+                //just to test admin order
+                // $_SESSION['user_id'] = 2;
+    $user_session = $_SESSION['user_id'];
+                // echo $user_session;
+                // echo $_SESSION['user_id'];
+
+    $query = "SELECT * FROM users WHERE id = $user_session";
+    $myuser = mysqli_query($myConnection, $query);
+            
+                // print_r($myuser);
+    $user = mysqli_fetch_assoc($myuser);
+                // echo $user['role'];
+    if($user['role'] == 'admin'){
+        $user_id = $_SESSION['user_id_a'];
+                    // echo "admin ".$user_id;
+    }else{
+        $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1;
+                    // echo "user".$user_id;
+    }
+    
  
     $insertOrderQuery = "INSERT INTO orders (user_id, order_date, status, notes, total_cost, room)
                          VALUES ($user_id, '$order_date', '$status', '$notes', $total_cost, '$room')";
