@@ -18,6 +18,11 @@ function getProductQuantity($productId) {
     return 0;
 }
 
+if (isset($_SESSION['message'])) {
+    echo $_SESSION['message'];
+    unset($_SESSION['message']); 
+}
+
 ?>
 
 
@@ -30,25 +35,6 @@ function getProductQuantity($productId) {
 </head>
 <body>
 
-<!-- Navbar -->
-<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
-    <a class="navbar-brand" href="#">Cafeteria</a>
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Users</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Manual Order</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Checks</a></li>
-        </ul>
-        <span class="navbar-text me-3">
-            Admin
-        </span>
-        <img src="https://via.placeholder.com/30" class="rounded-circle" alt="Admin">
-    </div>
-</nav> -->
-
-<!-- Main Content -->
 <div class="container-fluid mt-4">
     <div class="row">
         <!-- Left Cart Section -->
@@ -57,7 +43,6 @@ function getProductQuantity($productId) {
             <div id="cart">
                 <?php
 
-                    // Check if cart is not empty
                     if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                         foreach ($_SESSION['cart'] as $item) {
                             $pid = $item['id'];
@@ -65,7 +50,6 @@ function getProductQuantity($productId) {
                             $productPrice = $item['price'];
                             $productName = $item['name'];
 
-                            // Display product in cart
                             echo "<div class='d-flex justify-content-between mb-2'>
                                 <span>$productName</span>  <!-- product name -->
                                 <div> 
@@ -159,8 +143,6 @@ function getProductQuantity($productId) {
                     } else {
                         $latestOrder = mysqli_fetch_assoc($myorders);
                     
-                        // print_r($myorders);
-                        // print_r($latestOrder);
         
                         $orderId = $latestOrder['id'];
 
@@ -174,13 +156,12 @@ function getProductQuantity($productId) {
                         $myproducts = mysqli_query($myConnection, $query);
 
 
-                        // Loop through the products and display them
                         while($product = mysqli_fetch_assoc($myproducts)) {
                             $pname = $product['name'];
                             $pimage = $product['image'];
                             $pprice = $product['price'];
                             $pid = $product['id'];
-                            $quantity = $product['quantity'];  // Quantity of the product in this order
+                            $quantity = $product['quantity'];  
 
                             echo "<a href='cart.php?action=add&orderitem=$pid&price=$pprice&name=$pname&image=$pimage' class='btn col-3 text-center mb-4'>";
                             echo '<div>';
@@ -194,7 +175,6 @@ function getProductQuantity($productId) {
                     }
                 }
             ?>
-
 
             <div class="row">
                 <h4>Our Products</h4>
@@ -228,9 +208,30 @@ function getProductQuantity($productId) {
                     $total_pages = ceil($total_records / $limit);
 
                     echo '<div class="col-12 text-center mt-4">';
-                    for ($i = 1; $i <= $total_pages; $i++) {
-                        echo "<a href='?page=$i' class='btn btn-sm btn-primary m-1'>$i</a>";
+                    echo '<nav>';
+                    echo '<ul class="pagination justify-content-center">';
+
+                    if ($page > 1) {
+                        $prev = $page - 1;
+                        echo "<li class='page-item'><a class='page-link' href='?page=$prev' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
+                    } else {
+                        echo "<li class='page-item disabled'><span class='page-link' aria-hidden='true'>&laquo;</span></li>";
                     }
+
+                    for ($i = 1; $i <= $total_pages; $i++) {
+                        $active = ($i == $page) ? 'active' : '';
+                        echo "<li class='page-item $active'><a class='page-link' href='?page=$i'>$i</a></li>";
+                    }
+
+                    if ($page < $total_pages) {
+                        $next = $page + 1;
+                        echo "<li class='page-item'><a class='page-link' href='?page=$next' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>";
+                    } else {
+                        echo "<li class='page-item disabled'><span class='page-link' aria-hidden='true'>&raquo;</span></li>";
+                    }
+
+                    echo '</ul>';
+                    echo '</nav>';
                     echo '</div>';
                 ?>
             </div>
