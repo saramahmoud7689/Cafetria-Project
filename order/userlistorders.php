@@ -36,7 +36,7 @@
                     </h4>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="../user/home.php" class="nav-link">
+                            <a href="../user/home.php" class="nav-link active">
                                  Home
                             </a>
                         </li>

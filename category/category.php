@@ -112,7 +112,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../category/category.php" class="nav-link">
+                            <a href="../category/category.php" class="nav-link active">
                                  Categories
                             </a>
                         </li>

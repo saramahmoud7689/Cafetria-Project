@@ -116,7 +116,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="listproducts.php" class="nav-link">
+                            <a href="listproducts.php" class="nav-link active">
                                Products
                             </a>
                         </li>

@@ -73,7 +73,7 @@ if (isset($_SESSION['message'])) {
                                                 </a>
                                             </li>
                                             <li class='nav-item'>
-                                                <a href='make_order.php' class='nav-link'>
+                                                <a href='make_order.php' class='nav-link active'>
                                                 Manual Order
                                                 </a>
                                             </li>
