@@ -77,7 +77,7 @@
                     <h4 class="text-center mb-4">Admin Panel</h4>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="../product/listproducts.php" class="nav-link">
+                            <a href="../user/home.php" class="nav-link">
                                  Home
                             </a>
                         </li>
