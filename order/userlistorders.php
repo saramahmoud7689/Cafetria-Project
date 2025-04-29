@@ -29,31 +29,119 @@
 </head>
 <body>
     <div class="page-container row">
-    <aside class="col-md-2 col-12">
-                <div class="d-flex flex-column p-3">
-                    <h4 class="text-center mb-4">
-                        <?php echo "Hello, " . $_SESSION['user_name']; ?>
-                    </h4>
-                    <ul class="nav nav-pills flex-column mb-auto">
-                        <li class="nav-item">
-                            <a href="../user/home.php" class="nav-link active">
-                                 Home
-                            </a>
-                        </li>
-                        
-                        <li class="nav-item">
-                                <a href="../user/make_order.php" class="nav-link">
-                                    Make Order
-                                </a>
-                        </li>
+        <aside class="col-md-2 col-12">
 
-                        <li class="nav-item">
-                            <a href="../user/logout.php" class="nav-link">
-                               Logout
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                        <?php
+
+                            if(isset($_SESSION['user_id'])){
+                                $user_session = $_SESSION['user_id'];
+                            
+
+                                $query = "SELECT * FROM users WHERE id = $user_session";
+                                $myuser = mysqli_query($myConnection, $query);
+
+                                $user = mysqli_fetch_assoc($myuser);
+
+                                if($user['role'] == 'admin'){
+                                    echo "<div class='d-flex flex-column p-3'>
+                                            <h4 class='text-center mb-4'>Admin Panel</h4>
+                                            <ul class='nav nav-pills flex-column mb-auto'>
+                                                <li class='nav-item'>
+                                                    <a href='../user/home.php' class='nav-link'>
+                                                        Home
+                                                    </a>
+                                                </li>
+                                                <li class='nav-item'>
+                                                    <a href='../product/listproducts.php' class='nav-link'>
+                                                        Products
+                                                    </a>
+                                                </li>
+                                                <li class='nav-item'>
+                                                    <a href='../admin/listAllUsers.php' class='nav-link'>
+                                                        Users
+                                                    </a>
+                                                </li>
+                                                <li class='nav-item'>
+                                                    <a href='../order/adminlistorders.php' class='nav-link'>
+                                                        Orders
+                                                    </a>
+                                                </li>
+                                                <li class='nav-item'>
+                                                    <a href='make_order.php' class='nav-link'>
+                                                    Manual Order
+                                                    </a>
+                                                </li>
+                                                <li class='nav-item'>
+                                                    <a href='../order/checks.php' class='nav-link'>
+                                                        Checks
+                                                    </a>
+                                                </li>
+                                                <li class='nav-item'>
+                                                    <a href='../category/category.php' class='nav-link'>
+                                                        Categories
+                                                    </a>
+                                                </li>
+                                                <li class='nav-item'>
+                                                    <a href='logout.php' class='nav-link'>
+                                                        Logout
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>";
+                                    
+                                }else{
+                                    echo "<div class='d-flex flex-column p-3'>
+                                            <h4 class='text-center mb-4'>";
+                                            echo "Hello, " . $_SESSION['user_name'];
+                                            echo"</h4>
+                                                <ul class='nav nav-pills flex-column mb-auto'>
+                                                    <li class='nav-item'>
+                                                        <a href='../user/home.php' class='nav-link'>
+                                                            Home
+                                                        </a>
+                                                    </li>
+                                                    <li class='nav-item'>
+                                                        <a href='../user/make_order.php' class='nav-link'>
+                                                            Make Order
+                                                        </a>
+                                                    </li>
+                                                    <li class='nav-item'>
+                                                        <a href='../user/logout.php' class='nav-link'>
+                                                            Logout
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>";
+                                }
+
+                        }else{
+
+                            echo "<div class='d-flex flex-column p-3'>
+                                            <h4 class='text-center mb-4'>";
+                                            echo "Hello, Guest";
+                                            echo"</h4>
+                                                <ul class='nav nav-pills flex-column mb-auto'>
+                                                    <li class='nav-item'>
+                                                        <a href='../user/home.php' class='nav-link'>
+                                                            Home
+                                                        </a>
+                                                    </li>
+                                                    <li class='nav-item'>
+                                                        <a href='../order/userlistorders.php' class='nav-link'>
+                                                            My Orders
+                                                        </a>
+                                                    </li>
+                                                    <li class='nav-item'>
+                                                        <a href='../user/login.php' class='nav-link'>
+                                                            Login
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>";
+                        }
+                        ?>  
+                        
+                        
         </aside>
         <main class="col-md-8 col-12">
             <h1 class="text-center">Orders History</h1>

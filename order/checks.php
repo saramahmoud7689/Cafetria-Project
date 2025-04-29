@@ -62,7 +62,7 @@
                              </a>
                          </li>
                          <li class="nav-item">
-                             <a href="../order/checks.php" class="nav-link active">
+                             <a href="../order/checks.php" class="nav-link">
                                   Checks
                              </a>
                          </li>
