@@ -101,6 +101,11 @@
                                                         </a>
                                                     </li>
                                                     <li class='nav-item'>
+                                                    <a href='../order/userlistorders.php' class='nav-link active'>
+                                                        My Orders
+                                                    </a>
+                                                    </li>
+                                                    <li class='nav-item'>
                                                         <a href='../user/make_order.php' class='nav-link'>
                                                             Make Order
                                                         </a>

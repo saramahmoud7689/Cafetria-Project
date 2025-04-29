@@ -112,6 +112,11 @@ if (isset($_SESSION['message'])) {
                                                     </a>
                                                 </li>
                                                 <li class='nav-item'>
+                                                    <a href='../user/make_order.php' class='nav-link active'>
+                                                        Make Order
+                                                    </a>
+                                                </li>
+                                                <li class='nav-item'>
                                                     <a href='../user/logout.php' class='nav-link'>
                                                         Logout
                                                     </a>
@@ -248,13 +253,15 @@ if (isset($_SESSION['message'])) {
                             }else{
                                 echo "<h4>latest order</h4>";
 
-                                $query = "SELECT * FROM orders ORDER BY order_date DESC LIMIT 1"; // Assuming 'created_at' is the date column
+                                $user_id = $_SESSION['user_id'];
+
+                                $query = "SELECT * FROM orders WHERE user_id = $user_id ORDER BY order_date DESC LIMIT 1";
                                 $myorders = mysqli_query($myConnection, $query);
                                 
                                 if (!$myorders) {
                                     echo "Error: " . mysqli_error($myConnection);
                                 } elseif (mysqli_num_rows($myorders) == 0) {
-                                    echo "No orders found.";
+                                    echo "No orders yet.";
                                 } else {
                                     $latestOrder = mysqli_fetch_assoc($myorders);
                                 
@@ -299,7 +306,7 @@ if (isset($_SESSION['message'])) {
                             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                             $start_from = ($page - 1) * $limit;
 
-                            $query = "SELECT * FROM products LIMIT $start_from, $limit";
+                            $query = "SELECT * FROM products WHERE avalability = 'true' LIMIT $start_from, $limit ";
                             $myproducts = mysqli_query($myConnection, $query);
 
                             while($product = mysqli_fetch_assoc($myproducts)) {
