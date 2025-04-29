@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['profile_picture'] = $user['profile_picture'];
 
         if ($user['role'] == 'admin') {
-            header("Location: ../admin/listAllUsers.php");
+            header("Location: ../product/listproducts.php");
         } else {
             header("Location: home.php");
         }

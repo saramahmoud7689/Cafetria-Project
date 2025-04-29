@@ -33,6 +33,17 @@
             echo "<div class='alert alert-danger text-center m-auto w-50'>Product Price is required </div>";
         }
 
+        if (!is_numeric($_POST['price']) && !empty($_POST['name']) && strlen($_POST['name']) >= 3) {
+            $errors['price'] = "Price should be numeric";
+            echo "<div class='alert alert-danger text-center m-auto w-50'>Product Price should be numeric </div>";
+        }
+
+       
+        if (!preg_match('/^(0|[1-9][0-9]{0,2})$/', $_POST['price']) && !empty($_POST['name']) && strlen($_POST['name']) >= 3) {
+            $errors['price'] = "Price should be between 0 to 999";
+            echo "<div class='alert alert-danger text-center m-auto w-50'>Product Price should be between 0 to 999 </div>";
+        }
+
         if (empty($_POST['avalability'])) {
             $errors['avalability'] = "Avalability is required";
             echo "<div class='alert alert-danger text-center m-auto w-50'>Product Availability is required </div>";
@@ -116,7 +127,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="listproducts.php" class="nav-link">
+                            <a href="listproducts.php" class="nav-link active">
                                Products
                             </a>
                         </li>
@@ -153,11 +164,11 @@
             <form method="POST" class="m-4" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name">
+                    <input type="text" class="form-control" id="name" name="name" maxlength="20">
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
-                    <input type="text" class="form-control" id="price" name="price">
+                    <input type="text" class="form-control" id="price" name="price" maxlength="3">
                 </div>
                 <div>
                     <label for="avalability" class="form-label">Availability</label>

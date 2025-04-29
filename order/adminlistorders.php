@@ -15,7 +15,7 @@ if ($_SESSION['role'] !== 'admin') {
 
 include_once '../connect.php';
 
-$rowsPerPage = 10; // Number of rows per page
+$rowsPerPage = 10;
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($currentPage - 1) * $rowsPerPage;
 
@@ -25,7 +25,7 @@ $totalRows = mysqli_fetch_assoc($countResult)['total'];
 $totalPages = ceil($totalRows / $rowsPerPage);
 
 $getQuery = "
-    SELECT orders.id AS order_id, orders.order_date, orders.status, orders.room, users.name 
+    SELECT orders.id AS order_id, orders.order_date, orders.status, orders.room, orders.notes, orders.total_cost,users.name 
     FROM orders 
     JOIN users ON orders.user_id = users.id 
     LIMIT $offset, $rowsPerPage
@@ -95,6 +95,8 @@ $getResult = mysqli_query($myConnection, $getQuery);
                                 <th>Order Date</th>
                                 <th>Name</th>
                                 <th>Room</th>
+                                <th>Notes</th>
+                                <th>Total Amount</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -115,6 +117,8 @@ $getResult = mysqli_query($myConnection, $getQuery);
                                         <td><?= htmlspecialchars($orderInfo['order_date']) ?></td>
                                         <td><?= htmlspecialchars($orderInfo['name']) ?></td>
                                         <td><?= htmlspecialchars($orderInfo['room']) ?></td>
+                                        <td><?= htmlspecialchars($orderInfo['notes']) ?></td>
+                                        <td><?= $orderInfo['total_cost'] . ' EGP' ?></td>
                                         <td>
                                             <span class="badge 
                                                 <?= $orderInfo['status'] === 'processing' ? 'bg-warning text-dark' : '' ?>

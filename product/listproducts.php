@@ -56,7 +56,7 @@ $numOfPages = ceil($totalProducts / $limit);
                         <a href="../user/home.php" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="listproducts.php" class="nav-link">Products</a>
+                        <a href="listproducts.php" class="nav-link active">Products</a>
                     </li>
                     <li class="nav-item">
                         <a href="../admin/listAllUsers.php" class="nav-link">Users</a>
