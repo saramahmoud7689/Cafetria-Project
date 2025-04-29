@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       VALUES ('$name', '$email', '$hashed_password', '$room', '$profile_picture', '$role')";
 
             if (mysqli_query($myConnection, $query)) {
-                header("Location: login.php?registration=success");
+                header("Location: listAllUsers.php");
                 exit();
             } else {
                 $errors[] = "Database error: " . mysqli_error($myConnection);
