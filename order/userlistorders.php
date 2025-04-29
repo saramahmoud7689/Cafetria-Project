@@ -141,6 +141,14 @@
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal<?= $orderId ?>">
                                         Cancel
                                     </button>
+                                    <?php endif; ?>
+
+                                    <?php if ($orderInfo["status"] === "cancelled"): ?>
+                                    <button type="button" class="btn btn-secondary" disabled>
+                                        Cancelled
+                                    </button>
+                                    <?php endif; ?>
+                                    
 
                                     <div class="modal fade" id="cancelModal<?= $orderId ?>" tabindex="-1" aria-labelledby="modalLabel<?= $orderId ?>" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -159,7 +167,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <?php endif; ?>
                                 </td>
                             </tr>
                             <?php
