@@ -1,4 +1,16 @@
 <?php
+
+session_start();
+if (!isset($_SESSION['user_name'])) {
+    header("Location: ../user/login.php");
+    exit();
+}
+
+if ( $_SESSION['role'] !== 'admin' ) {
+    header("Location: ../unauthorized.php");
+    exit();
+}
+
 include_once("../connect.php"); 
 
 if(isset($_GET["userid"])) {

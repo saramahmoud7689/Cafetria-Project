@@ -2,6 +2,18 @@
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
+
+    session_start();
+    if (!isset($_SESSION['user_name'])) {
+        header("Location: ../user/login.php");
+        exit();
+    }
+
+    if ( $_SESSION['role'] !== 'admin' ) {
+        header("Location: ../unauthorized.php");
+        exit();
+    }
+    
     include_once '../connect.php';
     $errors = array();
     $catId = $_GET['catid'];
@@ -69,32 +81,42 @@
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
                             <a href="../product/listproducts.php" class="nav-link">
-                                <i class="fas fa-home me-2"></i> Home
+                                 Home
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="../product/listproducts.php" class="nav-link">
-                                <i class="fas fa-box me-2"></i> Products
+                               Products
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-users me-2"></i> Users
+                            <a href="../admin/listAllUsers.php" class="nav-link">
+                                 Users
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-shopping-cart me-2"></i> Manual Order
+                            <a href="../order/adminlistorders.php" class="nav-link">
+                                Orders
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-list-check me-2"></i> Checks
+                            <a href="../user/make_order.php" class="nav-link">
+                               Manual Order
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-user-shield me-2"></i> Admin
+                            <a href="../order/checks.php" class="nav-link">
+                                 Checks
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../category/category.php" class="nav-link">
+                                 Categories
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../user/logout.php" class="nav-link">
+                             LogOut
                             </a>
                         </li>
                     </ul>

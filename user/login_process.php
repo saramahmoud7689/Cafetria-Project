@@ -2,40 +2,35 @@
 include_once '../connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = mysqli_real_escape_string($myConnection, $_POST['username']);
+    $email = mysqli_real_escape_string($myConnection, $_POST['email']);
     $password = $_POST['password'];
 
-    if (empty($username) || empty($password)) {
+    if (empty($email) || empty($password)) {
         header("Location: login.php?error=empty_fields");
         exit();
     }
 
-    $query = "SELECT * FROM users WHERE email='$username' OR name='$username'";
+    $query = "SELECT * FROM users WHERE email='$email'";
     $result = mysqli_query($myConnection, $query);
 
-    if (mysqli_num_rows($result) == 1) {
-        $user = mysqli_fetch_assoc($result);
+    $user = mysqli_fetch_assoc($result);
 
-        if (password_verify($password, $user['password'])) {
-            session_start();
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_name'] = $user['name'];
-            $_SESSION['user_email'] = $user['email'];
-            $_SESSION['role'] = $user['role'];
-            $_SESSION['profile_picture'] = $user['profile_picture'];
+    if ($user && password_verify($password, $user['password'])) {
+        session_start();
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_name'] = $user['name'];
+        $_SESSION['user_email'] = $user['email'];
+        $_SESSION['role'] = $user['role'];
+        $_SESSION['profile_picture'] = $user['profile_picture'];
 
-            if ($user['role'] == 'admin') {
-                header("Location: admin_dashboard.php");
-            } else {
-                header("Location: user_dashboard.php");
-            }
-            exit();
+        if ($user['role'] == 'admin') {
+            header("Location: ../admin/listAllUsers.php");
         } else {
-            header("Location: login.php?error=invalid_credentials");
-            exit();
+            header("Location: home.php");
         }
+        exit();
     } else {
-        header("Location: login.php?error=user_not_found");
+        header("Location: login.php?error=invalid_credentials");
         exit();
     }
 } else {

@@ -1,4 +1,16 @@
 <?php
+
+session_start();
+if (!isset($_SESSION['user_name'])) {
+    header("Location: ../user/login.php");
+    exit();
+}
+
+if ( $_SESSION['role'] !== 'admin' ) {
+    header("Location: ../unauthorized.php");
+    exit();
+}
+
 include_once("../connect.php");
 
 $sql = "SELECT * FROM users";
@@ -49,8 +61,58 @@ if (!$result) {
 </head>
 
 <body class="bg-light">
-    <div class="container table-container">
+    <div class="page-container row">
+        <aside class="col-md-2 col-12">
+                <div class="d-flex flex-column p-3">
+                    <h4 class="text-center mb-4">Admin Panel</h4>
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="../product/listproducts.php" class="nav-link">
+                                 Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../product/listproducts.php" class="nav-link">
+                               Products
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../admin/listAllUsers.php" class="nav-link">
+                                 Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../order/adminlistorders.php" class="nav-link">
+                                Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../user/make_order.php" class="nav-link">
+                               Manual Order
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../order/checks.php" class="nav-link">
+                                 Checks
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../category/category.php" class="nav-link">
+                                 Categories
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../user/logout.php" class="nav-link">
+                             LogOut
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+        </aside>
+        <main class="col-12 col-md-10">
+        <div class="table-container">
         <h2 class="text-center my-4">All Users</h2>
+        <a href="addUser.php" class="btn btn-primary mb-4">Add New User</a>
         <div class="card shadow-sm">
             <div class="card-body">
                 <div class="table-responsive">
@@ -104,6 +166,9 @@ if (!$result) {
             </div>
         </div>
     </div>
+        </main>
+    </div>
+    
 </body>
 
 </html>
