@@ -47,18 +47,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['room_error'] = "Room is required";
     }
 
-    if (!isset($_FILES['profile-picture']) || $_FILES['profile-picture']['error'] == UPLOAD_ERR_NO_FILE) {
-        $errors['profile_picture_error'] = "Profile picture is required";
-    }
-
     if (!empty($errors)) {
         $query_string = http_build_query($errors);
         header("Location: Register.php?" . $query_string);
         exit();
     }
 
-    $profile_picture = '';
-    if (isset($_FILES['profile-picture'])) {
+    $profile_picture = null;
+    if (isset($_FILES['profile-picture']) && $_FILES['profile-picture']['error'] == UPLOAD_ERR_OK) {
         $target_dir = "uploads/";
         if (!file_exists($target_dir)) {
             mkdir($target_dir, 0777, true);
@@ -84,12 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
 
-        if (!move_uploaded_file($_FILES['profile-picture']['tmp_name'], $target_file)) {
-            header("Location: Register.php?profile_picture_error=Error uploading file");
-            exit();
+        if (move_uploaded_file($_FILES['profile-picture']['tmp_name'], $target_file)) {
+            $profile_picture = $target_file;
         }
-
-        $profile_picture = $target_file;
     }
 
     $role = 'user';
@@ -101,8 +94,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    $query = "INSERT INTO users (name, email, password, room, profile_picture, role) 
-            VALUES ('$name', '$email', '$hashed_password', '$room', '$profile_picture', '$role')";
+    if ($profile_picture) {
+        $query = "INSERT INTO users (name, email, password, room, profile_picture, role) 
+                VALUES ('$name', '$email', '$hashed_password', '$room', '$profile_picture', '$role')";
+    } else {
+        $query = "INSERT INTO users (name, email, password, room, role) 
+                VALUES ('$name', '$email', '$hashed_password', '$room', '$role')";
+    }
 
     if (mysqli_query($myConnection, $query)) {
         header("Location: login.php?registration=success");
