@@ -138,8 +138,8 @@ if (isset($_SESSION['message'])) {
                                                     </a>
                                                 </li>
                                                 <li class='nav-item'>
-                                                    <a href='../user/login.php' class='nav-link'>
-                                                        Login
+                                                    <a href='../user/logout.php' class='nav-link'>
+                                                        Logout
                                                     </a>
                                                 </li>
                                             </ul>
