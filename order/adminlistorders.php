@@ -120,12 +120,6 @@
                                             Cancel
                                         </button>
                                         <?php endif; ?>
-
-                                        <?php if ($orderInfo["status"] === "cancelled"): ?>
-                                        <button type="button" class="btn btn-secondary" disabled>
-                                            Cancelled
-                                        </button>
-                                        <?php endif; ?>
                             
                                         
                                         <div class="modal fade" id="cancelModal<?= $orderId ?>" tabindex="-1" aria-labelledby="cancelModalLabel<?= $orderId ?>" aria-hidden="true">
