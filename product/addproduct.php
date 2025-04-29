@@ -23,7 +23,12 @@
             echo "<div class='alert alert-danger text-center m-auto w-50'>Product Name is required </div>";
         } 
 
-        if (empty($_POST['price'])) {
+        if(strlen($_POST['name']) < 3 && !empty($_POST['name'])) {
+            $errors['name'] = "Name is too short";
+            echo "<div class='alert alert-danger text-center m-auto w-50'>Product Name lenght is should be more than or equal 3 characters </div>";
+        }
+
+        if (empty($_POST['price']) && !empty($_POST['name']) && strlen($_POST['name']) >= 3) {
             $errors['price'] = "Price is required";
             echo "<div class='alert alert-danger text-center m-auto w-50'>Product Price is required </div>";
         }
@@ -55,7 +60,9 @@
             $img_name = $_FILES['image']['name'];
             $img_size = $_FILES['image']['size'];
             $tmp_name = $_FILES['image']['tmp_name'];
-            $img_ex = strtolower(end(explode('.', $img_name)));
+            $imgExp = explode('.', $img_name);
+            $usualImgEx = end($imgExp);
+            $img_ex = strtolower($usualImgEx);
             $allowed_exs = array("jpg", "jpeg", "png"); 
             
             if ($img_size > 2097152) {  
@@ -81,8 +88,6 @@
                     echo "<div class='alert alert-danger text-center m-auto w-50'>Failed to add product: " . mysqli_error($myConnection) . "</div>";
                 }
             }
-        }else {
-            echo "<div class='alert alert-danger text-center m-auto w-50'>Failed to add product: " . mysqli_error($myConnection) . "</div>";
         }
     }
 ?>

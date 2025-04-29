@@ -24,7 +24,12 @@
         if(empty($_POST['name'])) {
             $errors['name'] = "Name is required";
             echo "<div class='alert alert-danger text-center m-auto w-50'>Category Name is required </div>";
-        } else {
+        }
+        if(strlen($_POST['name']) < 3 && !empty($_POST['name'])) {
+            $errors['name'] = "Name is too short";
+            echo "<div class='alert alert-danger text-center m-auto w-50'>Category Name lenght should be more than or equal 3 characters </div>";
+        } 
+        if(empty($errors)) {
             $catName = mysqli_real_escape_string($myConnection, $_POST['name']);
         }
 
