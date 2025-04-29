@@ -36,15 +36,15 @@
                     </h4>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="../user/make_order.php" class="nav-link">
+                            <a href="../user/home.php" class="nav-link">
                                  Home
                             </a>
                         </li>
                         
                         <li class="nav-item">
-                            <a href="../order/userlistorders.php" class="nav-link">
-                               My Orders
-                            </a>
+                                <a href="../user/make_order.php" class="nav-link">
+                                    Make Order
+                                </a>
                         </li>
 
                         <li class="nav-item">
@@ -141,6 +141,14 @@
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal<?= $orderId ?>">
                                         Cancel
                                     </button>
+                                    <?php endif; ?>
+
+                                    <?php if ($orderInfo["status"] === "cancelled"): ?>
+                                    <button type="button" class="btn btn-secondary" disabled>
+                                        Cancelled
+                                    </button>
+                                    <?php endif; ?>
+                                    
 
                                     <div class="modal fade" id="cancelModal<?= $orderId ?>" tabindex="-1" aria-labelledby="modalLabel<?= $orderId ?>" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -154,12 +162,11 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <a href='cancelorder.php?orderid=<?= $orderId ?>' class='btn btn-danger'>Cancel</a>
+                                                    <a href='updateorder.php?orderid=<?= $orderId ?>&status=cancelled' class='btn btn-danger'>Cancel</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <?php endif; ?>
                                 </td>
                             </tr>
                             <?php

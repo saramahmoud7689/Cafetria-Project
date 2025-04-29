@@ -131,12 +131,9 @@
                             </div>
 
                             <div class="mb-2">
-                                <label for="profile-picture" class="form-label">Profile Picture</label>
+                                <label for="profile-picture" class="form-label">Profile Picture (Optional)</label>
                                 <input type="file" id="profile-picture" name="profile-picture"
                                     class="form-control form-control-sm">
-                                <div id="profilePictureError" class="error-message">
-                                    <?php if (isset($_GET['profile_picture_error'])) echo htmlspecialchars($_GET['profile_picture_error']); ?>
-                                </div>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -157,7 +154,7 @@
     <script>
     document.getElementById('registerForm').addEventListener('submit', function(e) {
         let isValid = true;
-        const fields = ['name', 'email', 'password', 'confirm-password', 'room', 'profile-picture'];
+        const fields = ['name', 'email', 'password', 'confirm-password', 'room'];
 
         fields.forEach(field => {
             const input = document.getElementById(field);
@@ -182,7 +179,6 @@
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
         const room = document.getElementById('room').value;
-        const profilePicture = document.getElementById('profile-picture').value;
 
         if (!name) {
             showError('name', 'Name is required');
@@ -231,13 +227,6 @@
             isValid = false;
         } else {
             showValid('room');
-        }
-
-        if (!profilePicture) {
-            showError('profile-picture', 'Profile picture is required');
-            isValid = false;
-        } else {
-            showValid('profile-picture');
         }
 
         if (!isValid) {

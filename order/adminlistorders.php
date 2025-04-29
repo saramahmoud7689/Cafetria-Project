@@ -35,7 +35,7 @@
                     <h4 class="text-center mb-4">Admin Panel</h4>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="../product/listproducts.php" class="nav-link">
+                            <a href="../user/home.php" class="nav-link">
                                Home
                             </a>
                         </li>
@@ -110,14 +110,16 @@
                                 <td><?=$orderInfo['name']?></td>
                                 <td> <?= $orderInfo['room'] ?> </td>
                                 <td>
-                                    <?php if ($orderInfo["status"] === "processing"): ?>
+                                    
                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#outModal<?= $orderId ?>">
-                                            Out for delivery
+                                            <?php echo $orderInfo["status"]; ?>
                                         </button>    
                                         
+                                        <?php if ($orderInfo["status"] !== "cancelled"): ?>
                                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal<?= $orderId ?>">
                                             Cancel
                                         </button>
+                                        <?php endif; ?>
                             
                                         
                                         <div class="modal fade" id="cancelModal<?= $orderId ?>" tabindex="-1" aria-labelledby="cancelModalLabel<?= $orderId ?>" aria-hidden="true">
@@ -132,7 +134,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <a href='updateorder.php?orderid=<?= $orderId ?>&status=cancelled' class='btn btn-danger'>Update</a>
+                                                        <a href='updateorder.php?orderid=<?= $orderId ?>&status=cancelled' class='btn btn-danger'>Cancel</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -155,8 +157,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                    <?php endif; ?>
 
                                     <?php if ($orderInfo["status"] === "out for delivery"): ?>
                                     
