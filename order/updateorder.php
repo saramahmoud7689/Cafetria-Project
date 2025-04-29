@@ -5,6 +5,7 @@
         exit();
     }
 
+    //TODO to check if user is the owner of the order
     if ( $_SESSION['role'] !== 'admin' ) {
         header("Location: ../unauthorized.php");
         exit();

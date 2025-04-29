@@ -36,15 +36,15 @@
                     </h4>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="../user/make_order.php" class="nav-link">
+                            <a href="../user/home.php" class="nav-link">
                                  Home
                             </a>
                         </li>
                         
                         <li class="nav-item">
-                            <a href="../order/userlistorders.php" class="nav-link">
-                               My Orders
-                            </a>
+                                <a href="../user/make_order.php" class="nav-link">
+                                    Make Order
+                                </a>
                         </li>
 
                         <li class="nav-item">
@@ -154,7 +154,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <a href='cancelorder.php?orderid=<?= $orderId ?>' class='btn btn-danger'>Cancel</a>
+                                                    <a href='updateorder.php?orderid=<?= $orderId ?>&status=cancelled' class='btn btn-danger'>Cancel</a>
                                                 </div>
                                             </div>
                                         </div>

@@ -17,7 +17,7 @@ if (isset($_POST['confirm_order'])) {
         $status = 'Processing';
         
         //just to test admin order
-                $_SESSION['user_id'] = 1;
+                // $_SESSION['user_id'] = 1;
         $user_session = $_SESSION['user_id'];
 
         $query = "SELECT * FROM users WHERE id = $user_session";
