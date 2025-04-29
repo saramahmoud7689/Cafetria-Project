@@ -18,6 +18,11 @@ function getProductQuantity($productId) {
     return 0;
 }
 
+if (isset($_SESSION['message'])) {
+    echo $_SESSION['message'];
+    unset($_SESSION['message']); 
+}
+
 ?>
 
 
@@ -30,25 +35,6 @@ function getProductQuantity($productId) {
 </head>
 <body>
 
-<!-- Navbar -->
-<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
-    <a class="navbar-brand" href="#">Cafeteria</a>
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Users</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Manual Order</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Checks</a></li>
-        </ul>
-        <span class="navbar-text me-3">
-            Admin
-        </span>
-        <img src="https://via.placeholder.com/30" class="rounded-circle" alt="Admin">
-    </div>
-</nav> -->
-
-<!-- Main Content -->
 <div class="container-fluid mt-4">
     <div class="row">
         <!-- Left Cart Section -->
@@ -57,15 +43,13 @@ function getProductQuantity($productId) {
             <div id="cart">
                 <?php
 
-                    // Check if cart is not empty
                     if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                         foreach ($_SESSION['cart'] as $item) {
-                            $pid = $item['id']; // Product ID from session
-                            $productQuantity = $item['quantity']; // Quantity from session
-                            $productPrice = $item['price']; // Product price (you can store price with the item when adding to the cart)
-                            $productName = $item['name']; // Product name (you can store the name too when adding to the cart)
+                            $pid = $item['id'];
+                            $productQuantity = $item['quantity'];
+                            $productPrice = $item['price'];
+                            $productName = $item['name'];
 
-                            // Display product in cart
                             echo "<div class='d-flex justify-content-between mb-2'>
                                 <span>$productName</span>  <!-- product name -->
                                 <div> 
@@ -80,26 +64,6 @@ function getProductQuantity($productId) {
                     } else {
                         echo "Your cart is empty.";
                     }
-                    // $query = "SELECT * FROM products";
-                    // $myproducts = mysqli_query($myConnection, $query);
-                    
-                    // while($product = mysqli_fetch_assoc($myproducts)) {
-                    //     $pname = $product['name'];
-                    //     $pprice = $product['price'];
-                    //     $pid = $product['id'];
-                    //     $productQuantity = getProductQuantity($pid);
-                    
-                    //     echo "<div class='d-flex justify-content-between mb-2'>
-                    //         <span>$pname</span>  <!-- product name -->
-                    //         <div> 
-                    //             <a href='cart.php?action=decrease&orderitem=$pid&price=$pprice' class='btn btn-sm btn-outline-secondary'>-</a> <!-- minus quantity -->
-                    //             <input type='text' value='$productQuantity' size='1' readonly> <!-- product quantity -->
-                    //             <a href='cart.php?action=increase&orderitem=$pid&price=$pprice' class='btn btn-sm btn-outline-secondary'>+</a> <!-- plus quantity -->
-                    //             EGP $pprice <!-- product price -->
-                    //             <a href='cart.php?action=delete&orderitem=$pid&price=$pprice' class='btn btn-sm btn-danger'>X</a> <!-- delete item -->
-                    //         </div>
-                    //     </div>";
-                    // }
                 ?>
             </div>
             <form method="POST" action="confirm_order.php">
@@ -128,17 +92,23 @@ function getProductQuantity($productId) {
 
         <!-- Right Product Section -->
         <div class="col-md-8">
+            <?php
+                $user_session = $_SESSION['user_id'];
 
-        
-            <!-- at admin view -->
-            <div class="mb-3">
-            <h4>Add to user</h4>
-            <form method="POST" action="">
-                <div class="row">
-                <select class="form-select" id="user" name="user_id">
-                    <option>Choose User</option>
-                    <?php
-                        $query = "SELECT * FROM users";
+                $query = "SELECT * FROM users WHERE id = $user_session";
+                $myuser = mysqli_query($myConnection, $query);
+
+                $user = mysqli_fetch_assoc($myuser);
+
+                if($user['role'] == 'admin'){
+                    echo "<div class='mb-3'>
+                            <h4>Add to user</h4>
+                            <form method='POST' action=''>
+                                <div class='row'>
+                                <select class='form-select' id='user' name='user_id'>
+                                    <option>Choose User</option>";
+
+                    $query = "SELECT * FROM users";
                         $myusers = mysqli_query($myConnection, $query);
 
                         while($user = mysqli_fetch_assoc($myusers)){
@@ -147,92 +117,123 @@ function getProductQuantity($productId) {
 
                             echo "<option value='$user_id'>$name</option>";
                         }
-                    ?>
-                </select>
-                <button type="submit" class="btn btn-primary mt-2">Set User</button>
-                <?php
+
+                    echo "</select>
+                          <button type='submit' class='btn btn-primary mt-2'>Set User</button>";
+
                     if (isset($_POST['user_id'])) {
                         $_SESSION['user_id_a'] = $_POST['user_id'];
                     }
 
-                ?>
-                </div>
-            </form>
-            </div>
+                    echo "
+                            </div>
+                        </form>
+                    </div>";
+                    
+                }else{
+                    echo "<h4>latest order</h4>";
 
-            <!-- at user view -->
-             <h4>latest order</h4>
-             <!-- show latest order -->
-              <?php
-                $query = "SELECT * FROM orders ORDER BY order_date DESC LIMIT 1"; // Assuming 'created_at' is the date column
-                $myorders = mysqli_query($myConnection, $query);
-                
-                if (!$myorders) {
-                    echo "Error: " . mysqli_error($myConnection);
-                } elseif (mysqli_num_rows($myorders) == 0) {
-                    echo "No orders found.";
-                } else {
-                    $latestOrder = mysqli_fetch_assoc($myorders);
-                
-                    // print_r($myorders);
-                    // print_r($latestOrder);
-    
-                    $orderId = $latestOrder['id'];
+                    $query = "SELECT * FROM orders ORDER BY order_date DESC LIMIT 1"; // Assuming 'created_at' is the date column
+                    $myorders = mysqli_query($myConnection, $query);
+                    
+                    if (!$myorders) {
+                        echo "Error: " . mysqli_error($myConnection);
+                    } elseif (mysqli_num_rows($myorders) == 0) {
+                        echo "No orders found.";
+                    } else {
+                        $latestOrder = mysqli_fetch_assoc($myorders);
+                    
+        
+                        $orderId = $latestOrder['id'];
 
-                    $query = "SELECT p.name, p.image, p.price, p.id, od.quantity 
-                    FROM products p 
-                    JOIN order_details od ON p.id = od.product_id
-                    JOIN orders o ON o.id = od.order_id
-                    WHERE od.order_id = $orderId
-                    ORDER BY o.order_date DESC";
+                        $query = "SELECT p.name, p.image, p.price, p.id, od.quantity 
+                        FROM products p 
+                        JOIN order_details od ON p.id = od.product_id
+                        JOIN orders o ON o.id = od.order_id
+                        WHERE od.order_id = $orderId
+                        ORDER BY o.order_date DESC";
 
+                        $myproducts = mysqli_query($myConnection, $query);
+
+
+                        while($product = mysqli_fetch_assoc($myproducts)) {
+                            $pname = $product['name'];
+                            $pimage = $product['image'];
+                            $pprice = $product['price'];
+                            $pid = $product['id'];
+                            $quantity = $product['quantity'];  
+
+                            echo "<a href='cart.php?action=add&orderitem=$pid&price=$pprice&name=$pname&image=$pimage' class='btn col-3 text-center mb-4'>";
+                            echo '<div>';
+                            echo "<img src='$pimage' alt='Product' class='img-fluid'>";
+                            echo "<h5>$pname</h5>";
+                            echo "<p class='badge bg-primary'>$$pprice</p>";
+                            echo "<p>Quantity: $quantity</p>";
+                            echo '</div>';
+                            echo '</a>';
+                        }
+                    }
+                }
+            ?>
+
+            <div class="row">
+                <h4>Our Products</h4>
+                <?php
+                    $limit = 4; 
+                    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                    $start_from = ($page - 1) * $limit;
+
+                    $query = "SELECT * FROM products LIMIT $start_from, $limit";
                     $myproducts = mysqli_query($myConnection, $query);
 
-
-                    // Loop through the products and display them
                     while($product = mysqli_fetch_assoc($myproducts)) {
                         $pname = $product['name'];
                         $pimage = $product['image'];
                         $pprice = $product['price'];
                         $pid = $product['id'];
-                        $quantity = $product['quantity'];  // Quantity of the product in this order
 
                         echo "<a href='cart.php?action=add&orderitem=$pid&price=$pprice&name=$pname&image=$pimage' class='btn col-3 text-center mb-4'>";
                         echo '<div>';
                         echo "<img src='$pimage' alt='Product' class='img-fluid'>";
                         echo "<h5>$pname</h5>";
                         echo "<p class='badge bg-primary'>$$pprice</p>";
-                        echo "<p>Quantity: $quantity</p>";
                         echo '</div>';
                         echo '</a>';
                     }
-                }
-                
 
-                
-              ?>
+                    $query2 = "SELECT COUNT(id) AS total FROM products";
+                    $result2 = mysqli_query($myConnection, $query2);
+                    $row = mysqli_fetch_assoc($result2);
+                    $total_records = $row['total'];
+                    $total_pages = ceil($total_records / $limit);
 
-            <div class="row">
+                    echo '<div class="col-12 text-center mt-4">';
+                    echo '<nav>';
+                    echo '<ul class="pagination justify-content-center">';
 
-            <?php
-                $query = "SELECT * FROM products";
-                $myproducts = mysqli_query($myConnection, $query);
+                    if ($page > 1) {
+                        $prev = $page - 1;
+                        echo "<li class='page-item'><a class='page-link' href='?page=$prev' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
+                    } else {
+                        echo "<li class='page-item disabled'><span class='page-link' aria-hidden='true'>&laquo;</span></li>";
+                    }
 
-                while($product = mysqli_fetch_assoc($myproducts)) {
-                    $pname = $product['name'];
-                    $pimage = $product['image'];
-                    $pprice = $product['price'];
-                    $pid = $product['id'];
+                    for ($i = 1; $i <= $total_pages; $i++) {
+                        $active = ($i == $page) ? 'active' : '';
+                        echo "<li class='page-item $active'><a class='page-link' href='?page=$i'>$i</a></li>";
+                    }
 
-                    echo "<a href='cart.php?action=add&orderitem=$pid&price=$pprice&name=$pname&image=$pimage' class='btn col-3 text-center mb-4'>";
-                    echo '<div>';
-                    echo "<img src='$pimage' alt='Product' class='img-fluid'>";
-                    echo "<h5>$pname</h5>";
-                    echo "<p class='badge bg-primary'>$$pprice</p>";
+                    if ($page < $total_pages) {
+                        $next = $page + 1;
+                        echo "<li class='page-item'><a class='page-link' href='?page=$next' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>";
+                    } else {
+                        echo "<li class='page-item disabled'><span class='page-link' aria-hidden='true'>&raquo;</span></li>";
+                    }
+
+                    echo '</ul>';
+                    echo '</nav>';
                     echo '</div>';
-                    echo '</a>';
-                }
-            ?>
+                ?>
             </div>
         </div>
     </div>
