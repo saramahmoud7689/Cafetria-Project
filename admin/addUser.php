@@ -1,6 +1,17 @@
 <?php
 include_once '../connect.php';
 
+session_start();
+if (!isset($_SESSION['user_name'])) {
+    header("Location: ../user/login.php");
+    exit();
+}
+
+if ( $_SESSION['role'] !== 'admin' ) {
+    header("Location: ../unauthorized.php");
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = isset($_POST['name']) ? mysqli_real_escape_string($myConnection, $_POST['name']) : '';
     $email = isset($_POST['email']) ? mysqli_real_escape_string($myConnection, $_POST['email']) : '';
@@ -108,10 +119,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 
-<body class="bg-light d-flex justify-content-center align-items-center vh-50">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-5">
+<body class="bg-light ">
+    <div class="page-container row">
+            <aside class="col-md-2 col-12">
+                    <div class="d-flex flex-column p-3">
+                        <h4 class="text-center mb-4">Admin Panel</h4>
+                        <ul class="nav nav-pills flex-column mb-auto">
+                            <li class="nav-item">
+                                <a href="../product/listproducts.php" class="nav-link">
+                                    Home
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../product/listproducts.php" class="nav-link">
+                                Products
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../admin/listAllUsers.php" class="nav-link">
+                                    Users
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../order/adminlistorders.php" class="nav-link">
+                                    Orders
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../user/make_order.php" class="nav-link">
+                                Manual Order
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../order/checks.php" class="nav-link">
+                                    Checks
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../category/category.php" class="nav-link">
+                                    Categories
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../user/logout.php" class="nav-link">
+                                LogOut
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+            </aside>
+            <div class="col-md-8 col-12">
                 <div class="card shadow-sm my-4">
                     <div class="card-body p-4">
                         <h3 class="text-center mb-4">Add User</h3>
@@ -194,7 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
             </div>
-        </div>
+        
     </div>
 
     <script>
