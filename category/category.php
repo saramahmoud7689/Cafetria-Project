@@ -191,9 +191,9 @@
         var confirmDeleteModal = document.getElementById('confirmDeleteModal');
         confirmDeleteModal.addEventListener('show.bs.modal', function(event) {
             var button = event.relatedTarget;
-            var productid = button.getAttribute('data-categoryid');
+            var catId = button.getAttribute('data-categoryid');
             var confirmBtn = document.getElementById('confirmDeleteBtn');
-            confirmBtn.href = 'delete.php?catid=' + productid;
+            confirmBtn.href = 'delete.php?catid=' + catId;
         });
     </script>
 </body>
