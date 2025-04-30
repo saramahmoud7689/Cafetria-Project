@@ -154,7 +154,7 @@
                                 echo "<td>" . $i++ . "</td>";
                                 echo "<td>" . htmlspecialchars($catInfo["name"]) . "</td>";
                                 echo "<td>
-                                        <a href='delete.php?catid={$catInfo['id']}' class='btn btn-danger btn-sm'>Delete</a>
+                                        <button class='btn btn-danger btn-sm' data-bs-toggle='modal' data-bs-target='#confirmDeleteModal' data-categoryid='{$catInfo['id']}'>Delete</button>
                                         <a href='update.php?catid={$catInfo['id']}' class='btn btn-warning btn-sm'>Update</a>
                                     </td>";
                                 echo "</tr>";
@@ -165,8 +165,36 @@
                     ?>
                 </tbody>
             </table>
+
+            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete this category?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <a href="#" class="btn btn-danger" id="confirmDeleteBtn">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
     
+    <script>
+        var confirmDeleteModal = document.getElementById('confirmDeleteModal');
+        confirmDeleteModal.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget;
+            var productid = button.getAttribute('data-categoryid');
+            var confirmBtn = document.getElementById('confirmDeleteBtn');
+            confirmBtn.href = 'delete.php?catid=' + productid;
+        });
+    </script>
 </body>
 </html>
