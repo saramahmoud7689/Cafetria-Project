@@ -16,7 +16,7 @@
      include_once '../connect.php'; 
      
      
-     $limit = 1;
+     $limit = 8;
      $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
      $page = max(1, $page); 
      $offset = ($page - 1) * $limit;
@@ -62,7 +62,7 @@
                              </a>
                          </li>
                          <li class="nav-item">
-                             <a href="../order/checks.php" class="nav-link">
+                             <a href="../order/checks.php" class="nav-link active">
                                   Checks
                              </a>
                          </li>
