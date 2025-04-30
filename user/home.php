@@ -48,7 +48,7 @@ include "../connect.php";
                 echo "<h4 class='text-center mb-4'>Hello, " . $_SESSION['user_name'] . "</h4>";
                 if (!empty($user['profile_picture'])) {
                     echo "<div class='text-center mb-3'>
-                            <img src='uploads/{$user['profile_picture']}' alt='Profile Picture' class='rounded-circle' width='100' height='100'>
+                            <img src='./{$user['profile_picture']}' alt='Profile Picture' class='rounded-circle' width='100' height='100'>
                           </div>";
                 }
                 echo "<ul class='nav nav-pills flex-column mb-auto'>
