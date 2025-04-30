@@ -165,21 +165,27 @@ if (!$result) {
                                     <?php while ($userInfo = mysqli_fetch_assoc($result)):
                                         $profilePath = '';
                                         if (!empty($userInfo["profile_picture"])) {
-                                            $basePath = "C:/xampp/htdocs/Cafetria-Project/user/uploads/";
+                                            $basePath = "C:/xampp/htdocs/Cafetria-Project/user/";
                                             $fileName = basename($userInfo["profile_picture"]);
                                             $fullPath = $basePath . $fileName;
+                                            // echo $fileName;
+                                            // echo $fullPath;
                                             if (file_exists($fullPath)) {
-                                                $profilePath = "../user/uploads/" . $fileName;
+                                                $profilePath = "../user/" . $fileName;
+                                                // $profilePath = '..user/{'$user['profile_picture']};
                                             }
+                                            
                                         }
+
+                                        
                                         ?>
                                     <tr>
                                         <td><?php echo htmlspecialchars($userInfo["name"]); ?></td>
                                         <td><?php echo htmlspecialchars($userInfo["email"]); ?></td>
                                         <td><?php echo htmlspecialchars($userInfo["room"]); ?></td>
                                         <td>
-                                            <?php if (!empty($profilePath)): ?>
-                                            <img src="<?php echo htmlspecialchars($profilePath); ?>" class="profile-pic"
+                                            <?php if (!empty($userInfo["profile_picture"])): ?>
+                                            <img src="<?php echo htmlspecialchars('../user/'.$userInfo["profile_picture"]); ?>" class="profile-pic"
                                                 alt="Profile Picture"
                                                 onerror="this.onerror=null;this.src='../assets/default-profile.jpg'">
                                             <?php else: ?>
