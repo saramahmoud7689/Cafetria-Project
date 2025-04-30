@@ -24,7 +24,13 @@
         if(empty($_POST['name'])) {
             $errors['name'] = "Name is required";
             echo "<div class='alert alert-danger text-center m-auto w-50'>Category Name is required </div>";
-        } else {
+        }
+        if(strlen($_POST['name']) < 3 && !empty($_POST['name'])) {
+            $errors['name'] = "Name is too short";
+            echo "<div class='alert alert-danger text-center m-auto w-50'>Category Name lenght should be more than or equal 3 characters </div>";
+        } 
+        
+        if(empty($errors)) {
             $catName = mysqli_real_escape_string($myConnection, $_POST['name']);
         }
 
@@ -77,7 +83,7 @@
                     <h4 class="text-center mb-4">Admin Panel</h4>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="../product/listproducts.php" class="nav-link">
+                            <a href="../user/home.php" class="nav-link">
                                  Home
                             </a>
                         </li>
@@ -107,7 +113,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../category/category.php" class="nav-link">
+                            <a href="../category/category.php" class="nav-link active">
                                  Categories
                             </a>
                         </li>

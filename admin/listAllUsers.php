@@ -78,13 +78,13 @@ if (!$result) {
                 <h4 class="text-center mb-4">Admin Panel</h4>
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="../product/listproducts.php" class="nav-link">Home</a>
+                        <a href="../user/home.php" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
                         <a href="../product/listproducts.php" class="nav-link">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a href="../admin/listAllUsers.php" class="nav-link">Users</a>
+                        <a href="../admin/listAllUsers.php" class="nav-link active">Users</a>
                     </li>
                     <li class="nav-item">
                         <a href="../order/adminlistorders.php" class="nav-link">Orders</a>
@@ -186,12 +186,15 @@ if (!$result) {
                                             <div class="no-image">No Image</div>
                                             <?php endif; ?>
                                         </td>
+                                         
                                         <td class="action-links">
                                             <a href="update.php?userid=<?php echo htmlspecialchars($userInfo["id"]); ?>"
                                                 class="btn btn-sm btn-primary">Update</a>
+                                            <?php if($userInfo['role'] !== 'admin'): ?>
                                             <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                                 data-bs-target="#confirmDeleteModal"
                                                 data-userid="<?php echo htmlspecialchars($userInfo["id"]); ?>">Delete</a>
+                                            <?php endif?>
                                         </td>
                                     </tr>
                                     <?php endwhile; ?>
